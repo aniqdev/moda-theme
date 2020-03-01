@@ -17,7 +17,7 @@ $permalink = esc_url( get_permalink() );
 ?>
 <article id="post-<?php the_ID(); ?>" <?php post_class('modablock row col-xs-6 col-sm-12'); ?>>
 	
-	<?php kumle_post_thumbnail(); ?>
+	<?php // kumle_post_thumbnail(); ?>
 	<div class="col-xs-12 col-sm-2">
 		<a class="img-wrapper" href="<?= $permalink; ?>" rel="bookmark">
 			<span class="img-bg" style="background-image: url('<?= kw_modablock_imgsrc($excerpt_data); ?>')"></span>
@@ -39,7 +39,7 @@ $permalink = esc_url( get_permalink() );
 				<div class="moda-block-readmore">
 					<i class="star dashicons dashicons-star-empty">&nbsp;</i>
 					<div class="sold"><?= $QuantitySold; ?></div>
-				</dibv>
+				</div>
 <!-- 				<div class="moda-block-readmore">
 					<a href="<?= $permalink; ?>">Hinzufügen</a>
 					<div class="moda-block-readmore">
@@ -47,15 +47,7 @@ $permalink = esc_url( get_permalink() );
 						<div class="sold"><?= $QuantitySold; ?></div>
 					</dibv>
 				</div> -->
-				<?php
-					// the_excerpt();
-					// the_content();
-				?>
 			</div><!-- .entry-content -->
-
-			<footer class="entry-footer">
-				<?php kumle_entry_footer(); ?>
-			</footer><!-- .entry-footer -->
 		</div>
 	</div>
 </article><!-- #post-<?php the_ID(); ?> -->
