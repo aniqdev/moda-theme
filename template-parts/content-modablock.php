@@ -15,13 +15,13 @@ $currentPrice = $excerpt_data['currentPrice'];
 $QuantitySold = $excerpt_data['QuantitySold'];
 $permalink = esc_url( get_permalink() );
 ?>
-<article id="post-<?php the_ID(); ?>" <?php post_class('modablock row col-xs-6 col-sm-12'); ?>>
+<article id="post-<?php the_ID(); ?>" <?php post_class('modablock row col-xs-6 col-sm-12'); ?> file="<?= basename(__FILE__); ?>">
 	
 	<?php // kumle_post_thumbnail(); ?>
 	<div class="col-xs-12 col-sm-2">
 		<a class="img-wrapper" href="<?= $permalink; ?>" rel="bookmark">
 			<span class="img-bg" style="background-image: url('<?= kw_modablock_imgsrc($excerpt_data); ?>')"></span>
-			<img class="img-main" src="<?= kw_modablock_imgsrc($excerpt_data); ?>" alt="">
+			<img class="img-main" src="<?= kw_modablock_imgsrc($excerpt_data); ?>" alt="<?= esc_attr(get_the_title()); ?>">
 		</a>
 	</div>
 	<div class="content-wrap col-xs-12 col-sm-10">

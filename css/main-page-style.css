@@ -152,6 +152,7 @@ font-style: normal;
   width: 20px;
   height: 20px;
   background: no-repeat 50% / 100% 100%;
+  margin-top: 50px;
 }
 
 .carousel-control-prev-icon {
@@ -294,6 +295,11 @@ html {margin-top: 0 !important;}
     line-height: 38px;
     font-family: 'Myriad Pro Light';
     /* font-family: 'Myriad Pro Regular'; */
+    text-shadow: 0 1px 3px #000;
+}
+
+.carousel-menu a:hover{
+	text-decoration: underline;
 }
 
 .main-page-slider .category-link{

@@ -13,18 +13,18 @@
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
-    <?php if(!defined('DEV_MODE')) the_gtm_head(); ?>
+    <title><?php wp_title(); ?></title>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="profile" href="http://gmpg.org/xfn/11">
-    <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>">
     <?php kw_js_variables(); ?>
-	<?php wp_head(); ?>
+	<?php //wp_head(); ?>
     <?php define('IS_FRONT_PAGE', is_front_page()); ?>
+    <link rel="stylesheet" href="<?= KW_TEMPLATE_DIRECTORY_URI ?>/css/main-page-bootstrap-grid.css">
+    <link rel="stylesheet" href="<?= KW_TEMPLATE_DIRECTORY_URI ?>/style.css">
+    <link rel="stylesheet" href="<?= KW_TEMPLATE_DIRECTORY_URI ?>/css/main-page-style.css">
 </head>
 
 <body <?php body_class(); ?>>
-<?php if(!defined('DEV_MODE')) the_gtm_body(); ?>
 <?php do_action( 'wp_body_open' ); ?>
 
 <div id="page" class="site <?= IS_FRONT_PAGE ? 'front-page' : ''?>">
