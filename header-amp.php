@@ -19,9 +19,12 @@
     <?php kw_js_variables(); ?>
 	<?php //wp_head(); ?>
     <?php define('IS_FRONT_PAGE', is_front_page()); ?>
+    <script async="" src="https://cdn.ampproject.org/v0.js"></script>
+    <script async custom-element="amp-carousel" src="https://cdn.ampproject.org/v0/amp-carousel-0.2.js"></script>
     <link rel="stylesheet" href="<?= KW_TEMPLATE_DIRECTORY_URI ?>/css/main-page-bootstrap-grid.css">
     <link rel="stylesheet" href="<?= KW_TEMPLATE_DIRECTORY_URI ?>/style.css">
-    <link rel="stylesheet" href="<?= KW_TEMPLATE_DIRECTORY_URI ?>/css/main-page-style.css">
+    <link rel="stylesheet" href="<?= KW_TEMPLATE_DIRECTORY_URI ?>/css/moda-page-style.css">
+    <link rel="stylesheet" href="<?= KW_TEMPLATE_DIRECTORY_URI ?>/css/moda-page-style-amp.css">
 </head>
 
 <body <?php body_class(); ?>>

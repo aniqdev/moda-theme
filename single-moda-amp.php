@@ -49,26 +49,11 @@
 
 <div class="moda-page-slider row">
 	<div id="moda_page_slider" class="carousel slide" data-ride="carousel">
-	  <ol class="carousel-indicators">
+	  <amp-carousel width="1290" height="680" layout="responsive" type="slides" class="carousel-inner">
 	  	<?php foreach ($PictureURL as $key => $hash): ?>
-	    <li data-target="#moda_page_slider" data-slide-to="<?= $key; ?>" class="<?= $key === 0 ? 'active' : ''; ?>"></li>
-		<?php endforeach ?>
-	  </ol>
-	  <div class="carousel-inner">
-	  	<?php foreach ($PictureURL as $key => $hash): ?>
-	    <div class="carousel-item <?= $key === 0 ? 'active' : ''; ?>">
-			<amp-img itemprop="image" class="-img" src="<?= get_ebay_pic_url_by_hash($hash, 600); ?>" alt="<?= $the_title; ?>">
-	    </div>
+			<amp-img width="1290" height="680" layout="responsive" itemprop="image" class="-img" src="<?= get_ebay_pic_url_by_hash($hash, 600); ?>" alt="<?= $the_title; ?>"></amp-img>
 		<?php endforeach; ?>
-	  </div>
-	  <a class="carousel-control-prev" href="#moda_page_slider" role="button" data-slide="prev">
-	    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-	    <span class="sr-only">Previous</span>
-	  </a>
-	  <a class="carousel-control-next" href="#moda_page_slider" role="button" data-slide="next">
-	    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-	    <span class="sr-only">Next</span>
-	  </a>
+	  </amp-carousel>
 	</div>
 </div>
 
