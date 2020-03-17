@@ -49,11 +49,13 @@
 
 <div class="moda-page-slider row">
 	<div id="moda_page_slider" class="carousel slide" data-ride="carousel">
+	  <?php if(1): ?>
 	  <amp-carousel width="1290" height="680" layout="responsive" type="slides" class="carousel-inner">
 	  	<?php foreach ($PictureURL as $key => $hash): ?>
 			<amp-img width="1290" height="680" layout="responsive" itemprop="image" class="-img" src="<?= get_ebay_pic_url_by_hash($hash, 600); ?>" alt="<?= $the_title; ?>"></amp-img>
 		<?php endforeach; ?>
 	  </amp-carousel>
+	  <?php endif; ?>
 	</div>
 </div>
 
@@ -113,42 +115,28 @@ foreach ($ItemSpecifics as $key => $meta) : ?>
 </ul>
 
 
-<div id="modablocks" class="moda-page-slider row">
-	<div id="moda_page_carousel" class="carousel slide" data-ride="carousel">
-	  <ol class="carousel-indicators">
-	  	<?php for ($key=0; $key < 3; $key++): ?>
-	    <li data-target="#moda_page_carousel" data-slide-to="<?= $key; ?>" class="<?= $key === 0 ? 'active' : ''; ?>"></li>
-		<?php endfor ?>
-	  </ol>
-	  <div class="carousel-inner">
-	  	<?php if (0) foreach ($PictureURL as $key => $hash): ?>
-	    <div class="carousel-item <?= $key === 0 ? 'active' : ''; ?>">
-			<img class="-img" src="<?= get_ebay_pic_url_by_hash($hash, 600); ?>" alt="<?= $the_title; ?>">
-	    </div>
-		<?php endforeach; ?>
-
-		<div class="carousel-item active"><div class="row">
+<div id="modablocks" class="moda-page-slider">
+	<div id="moda_page_carousel" class="">
+	  <amp-carousel width="1290" height="980" layout="responsive" type="slides" class="carousel-inner">
+	  	<?php if(1): ?>
+		<div class="" width="1290" height="580">
+ 			<div class="row">
 			<?php
 			    foreach ( $myposts as $key => $post ) : setup_postdata( $post ); 
 			        get_template_part( 'template-parts/content', 'modablock' );
 			        if ($key !== (count($myposts) - 1) && $key % 2 === 1) {
-			        	echo '</div></div><div class="carousel-item"><div class="row">';
+			        	echo '</div></div><div class=""><div class="row">';
 			        }
 			    endforeach; 
 			    wp_reset_postdata();
 			?>
-		</div></div>
-	  </div>
-	  <a class="carousel-control-prev" href="#moda_page_carousel" role="button" data-slide="prev">
-	    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-	    <span class="sr-only">Previous</span>
-	  </a>
-	  <a class="carousel-control-next" href="#moda_page_carousel" role="button" data-slide="next">
-	    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-	    <span class="sr-only">Next</span>
-	  </a>
+			</div>
+		</div>
+		<?php endif; ?>
+	  </amp-carousel>
 	</div>
 </div>
+
 
 <?php if($Variations = false): ?>
 <h4>Variations</h4>
