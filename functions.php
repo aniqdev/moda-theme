@@ -146,6 +146,7 @@ function kumle_setup() {
 	// Register navigation menu locations.
 	register_nav_menus( array(
 		'primary' 	=> esc_html__( 'Primary', 'kumle' ),
+		'amp-menu' 	=> esc_html__( 'Amp-Menu', 'kumle' ),
 		'social'  	=> esc_html__( 'Social', 'kumle' ),
 	) );
 
@@ -750,3 +751,9 @@ function kw_page_banner($img_urls = '')
 	</div>
 </div>
 <?php }
+
+
+function is_amp_page()
+{
+	return isset($_GET['amp']);
+}

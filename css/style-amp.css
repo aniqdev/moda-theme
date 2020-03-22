@@ -3323,6 +3323,8 @@ button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:transpa
 	margin-bottom: -60px;
 	line-height: 60px;
 	text-align: center;
+	display: block;
+    overflow: hidden;
 }
 .kw-page-banner-wrapper{
 	margin: 0 -15px;
@@ -3380,7 +3382,6 @@ button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:transpa
 	font-size: 15px;
 	line-height: 18px;
 }
-
 
 
 
@@ -3486,8 +3487,8 @@ button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:transpa
 
 	 /* Mean MEnu css */
 
-	#main-nav {
-		display: none;
+	#main-nav .menu{
+		height: 54px;
 	}
 
 	.mean-container .main-navigation ul li.menu-item-has-children > a::after,
@@ -3716,6 +3717,69 @@ button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:transpa
 
 	h6 {
 		font-size: 17px;
+	}
+
+	.amp-navigation{
+		position: relative;
+		height: 54px;
+	}
+
+	.amp-navigation .amp-menu-open{
+		position: absolute;
+		right: 0;
+		height: 100%;
+		background: transparent;
+	    border: 0;
+	    box-shadow: none;
+	    padding: 0 15px;
+	    overflow: hidden;
+        background: #fff;
+	}
+	.amp-navigation .amp-menu-close{
+		position: absolute;
+	    right: 0;
+	    height: 100%;
+	    width: 58px;
+	    text-align: center;
+	    line-height: 54px;
+	    font-size: 42px;
+	}
+
+	.amp-navigation .amp-menu-open i{
+	    width: 33px;
+	    display: block;
+	    margin-top: 4px;
+	    height: 4px;
+	    background: #878787;
+	}
+
+	.amp-menu{
+		height: 100%;
+		background: #100e1c;
+		position: absolute;
+		top: 100%;
+		height: 0;
+		margin: 0;
+    	width: 100%;
+   	    overflow: hidden;
+	}
+	.amp-navigation .amp-menu-open:focus{
+		height: 0;
+	}
+	.amp-navigation .amp-menu-open:focus+.menu-amp-menu-container .amp-menu{
+		height: auto;
+	}
+
+	.amp-menu>li{
+		height: 100%;
+	}
+
+	.amp-menu>li>a{
+	    height: 100%;
+	    color: #eaeaea;
+	    padding: 10px;
+	    border-top: 1px solid #555;
+	        display: block;
 	}
 
 	#footer-widgets, #colophon {

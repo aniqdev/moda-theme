@@ -10,7 +10,6 @@
 
 if (isset($_GET['amp'])) {
 
-	echo "<script>console.log('is amp')</script>";
 	get_header('amp');
 
 	include __DIR__.'/single-moda-amp.php';
@@ -19,7 +18,6 @@ if (isset($_GET['amp'])) {
 
 }else{
 
-	echo "<script>console.log('not amp')</script>";
 	get_header();
 
 	include __DIR__.'/single-moda-original.php';

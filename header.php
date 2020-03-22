@@ -18,6 +18,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="profile" href="http://gmpg.org/xfn/11">
     <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>">
+    <?php if(is_singular( 'moda' )): ?><link rel="amphtml" href="<?= ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>?amp"><?php endif; ?>
     <?php kw_js_variables(); ?>
 	<?php wp_head(); ?>
     <?php define('IS_FRONT_PAGE', is_front_page()); ?>

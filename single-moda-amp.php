@@ -1,9 +1,7 @@
 
 
-	<div id="primaryy" class="container content-area" style="width: 100%;" file="<?= basename(__FILE__); ?>" itemtype="http://schema.org/Product" itemscope>
+	<div id="primaryy" class="container content-area" style="width: 100%;" itemtype="http://schema.org/Product" itemscope>
 		<main id="main" class="site-main single-moda" role="main">
-
-<link rel="stylesheet" href="<?= KW_TEMPLATE_DIRECTORY_URI . '/css/moda-page-style.css?ver='.filemtime(__DIR__.'/css/moda-page-style.css'); ?>">
 
 <div class="prev-next-post row">
 	<div class="col-xs-6"><?php previous_post_link(); ?></div>
@@ -83,7 +81,7 @@
 </div>
 
 <div class="inner-baner row">
-	<img src="<?= KW_TEMPLATE_DIRECTORY_URI; ?>/images/elegance.jpg" alt="<?= $the_title; ?>">
+	<amp-img width="1079" height="185" src="<?= KW_TEMPLATE_DIRECTORY_URI; ?>/images/elegance.jpg" alt="<?= $the_title; ?>"></amp-img>
 </div>
 
 <article class="-content" itemprop="description">
@@ -117,13 +115,13 @@ foreach ($ItemSpecifics as $key => $meta) : ?>
 
 <div id="modablocks" class="moda-page-slider">
 	<div id="moda_page_carousel" class="">
-	  <amp-carousel width="1290" height="980" layout="responsive" type="slides" class="carousel-inner">
+	  <amp-carousel width="1290" height="1080" layout="responsive" type="slides" class="carousel-inner">
 	  	<?php if(1): ?>
-		<div class="" width="1290" height="580">
+		<div>
  			<div class="row">
 			<?php
 			    foreach ( $myposts as $key => $post ) : setup_postdata( $post ); 
-			        get_template_part( 'template-parts/content', 'modablock' );
+			        get_template_part( 'template-parts/content', 'modablock-amp' );
 			        if ($key !== (count($myposts) - 1) && $key % 2 === 1) {
 			        	echo '</div></div><div class=""><div class="row">';
 			        }
