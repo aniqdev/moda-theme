@@ -62,7 +62,7 @@
 	<div class="entry-content moda-block-bottom" itemprop="offers" itemtype="http://schema.org/Offer" itemscope>
 		<div class="moda-block-price"><span itemprop="price">55.00</span> €</div>
         <link itemprop="url" href="<?= ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>">
-        <meta itemprop="priceValidUntil" content="<?= date('Y-m-d', time() + 60*60*24*30 ); ?>" />
+        <meta itemprop="priceValidUntil" content="<?= date('Y-m-d', time() + 60*60*24*30 ); // 1m later ?>" />
         <meta itemprop="availability" content="https://schema.org/InStock">
         <meta itemprop="priceCurrency" content="EUR">
         <meta itemprop="itemCondition" content="https://schema.org/UsedCondition">

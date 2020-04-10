@@ -18,50 +18,46 @@ if (isset($_POST['optimize_db']) && $_POST['optimize_db'] === 'do-queries') {
 		<p class="submit"><button type="submit" class="button button-primary" name="optimize_db" value="do-queries">Оптимизировать базу данных</button> <?= $report; ?></p>
 	</form>
 </div>
-	<form id="js_go_form" class="go-form">
-		<div id="js_css_loader" class="lds-ellipsis-wr lds-ellipsis running"><div></div><div></div><div></div><div></div></div>
-	    <button name="aaa" value="update" type="button" class="js-go-btn js-tobe-disabled"><i class="dashicons dashicons-controls-repeat"></i> Update!</button> | 
-	    <button name="aaa" value="continue" type="button" class="js-go-btn js-tobe-disabled"><i class="dashicons dashicons-controls-play"></i> Continue!</button>
-	    <button name="aaa" value="restart" type="button" class="js-go-btn js-tobe-disabled"><i class="dashicons dashicons-controls-skipback"></i> Restart!</button>
-	    <button name="aaa" value="pause" type="button" class="js-go-btn js-pause-btn"><i class="dashicons dashicons-controls-pause"></i> Pause!</button>
-	</form>
+<div id="js_css_loader" class="lds-ellipsis-wr lds-ellipsis running"><div></div><div></div><div></div><div></div></div>
+<form id="js_go_form1" class="go-form"><br><br>
+	<fieldset><hr>
+	    <legend><b>Add</b> new moda pages</legend>
+	    <button name="insert" value="continue" type="button" class="js-pp-btn js-tobe-disabled"><i class="dashicons dashicons-controls-play"></i> Continue!</button>
+	    <button name="insert" value="restart" type="button" class="js-pp-btn js-tobe-disabled"><i class="dashicons dashicons-controls-skipback"></i> Restart!</button>
+	    <button name="pause" value="pause" type="button" class="js-pp-btn js-pause-btn"><i class="dashicons dashicons-controls-pause"></i> Pause!</button>
+	</fieldset>
+</form>
+<form id="js_go_form2" class="go-form"><br><br>
+	<fieldset><hr>
+	    <legend><b>Update</b> moda pages</legend>
+	    <button name="update" value="continue" type="button" class="js-pp-btn js-tobe-disabled"><i class="dashicons dashicons-controls-play"></i> Continue!</button>
+	    <button name="update" value="restart" type="button" class="js-pp-btn js-tobe-disabled"><i class="dashicons dashicons-controls-skipback"></i> Restart!</button>
+	    <button name="pause" value="pause" type="button" class="js-pp-btn js-pause-btn"><i class="dashicons dashicons-controls-pause"></i> Pause!</button>
+	</fieldset>
+</form>
 <script>
 jQuery(function($){
 	var pause = false
-	$('.js-go-btn').click(function(e){
+	$('.js-pp-btn').click(function(e){
 		$('.js-tobe-disabled').attr('disabled', true)
 		pause = false
-		if (this.value === 'pause') {
+		var act = this.name
+		var effect = this.value
+		var send = {action:'pult', act:act, effect:effect}
+		if (effect === 'pause') {
 			pause = true
 			$('.js-tobe-disabled').attr('disabled', false)
 		}else{
-			do_ajax(this.value)
+			do_ajax(send)
 		}
 	});
-	function do_ajax(btn) {
-		$.post(ajaxurl,
-			{action:'pult', btn:btn},
-			function(data){
+	function do_ajax(send) {
+		$.post(ajaxurl,	send, function(data){
 				if ( !pause && data.keep_going ) {
-					if(btn === 'update') do_ajax(btn)
-					else do_ajax('continue')
+					do_ajax('continue')
 				}
-				// console.log(data);
 			}, 'json');
 	}
-
-	// ajax loader
-	var ajax_loader = $('#js_css_loader');
-	var css_class = 'running'
-	ajax_loader.removeClass(css_class);
-
-	$( document ).ajaxSend(function() {
-		ajax_loader.addClass(css_class);
-	});
-
-	$( document ).ajaxStop(function() {
-		ajax_loader.removeClass(css_class);
-	});
 });
 </script>
 <?php
@@ -76,6 +72,16 @@ jQuery(function($){
 ?>
 
 <style>
+.go-form button{
+	width: 100px;
+}
+.go-form fieldset{
+	border: 1px solid #aaa;
+    padding: 8px 15px;
+    margin: 0;
+    width: 50%;
+}
+/* css loader animation */
 .lds-ellipsis {
   display: inline-block;
   position: relative;
@@ -126,6 +132,23 @@ jQuery(function($){
 
 </style>
 
+<script>
+jQuery(function($){
+	// ajax loader
+	var ajax_loader = $('#js_css_loader');
+	var css_class = 'running'
+	ajax_loader.removeClass(css_class);
+
+	$( document ).ajaxSend(function() {
+		ajax_loader.addClass(css_class);
+	});
+
+	$( document ).ajaxStop(function() {
+		ajax_loader.removeClass(css_class);
+	});
+});
+</script>
+
 <?php
 
 if (function_exists('get_wp_term_image'))
@@ -140,4 +163,4 @@ if (function_exists('get_tax_image_urls')){
 	$img_urls = get_tax_image_urls($term_id = 60 ,'full');
 }
 
-sa($img_urls);
+// sa($img_urls);

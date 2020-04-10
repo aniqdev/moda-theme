@@ -606,19 +606,16 @@ add_action( 'wp_ajax_pult', 'ajax_pult_page' ); // wp_ajax_{ЗНАЧЕНИЕ П�
  
 function ajax_pult_page()
 {
-	if ($_POST['btn'] === 'update') {
+
+	if ($_POST['act'] === 'insert') {
+		$ret = kw_insert_post();
+	}
+	if ($_POST['act'] === 'update') {
 		// sleep(1);
 		$ret = kw_update_post();
 	}
 
-	if ($_POST['btn'] === 'continue' || $_POST['btn'] === 'restart') {
-		$ret = kw_insert_post([
-			'btn' => $_POST['btn'],
-			'limit' => '10'
-		]);
-	}
-
-	echo json_encode($ret);
+	echo json_encode($_POST);
  
 	die; // даём понять, что обработчик закончил выполнение
 }
