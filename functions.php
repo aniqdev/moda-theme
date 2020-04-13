@@ -447,11 +447,11 @@ function create_moda_category_taxonomy(){
 function kw_insert_post($opts = [])
 {
 	$opts = array_merge ( [
-		'btn' => '',
+		'effect' => '',
 		'limit' => '10'
 	], $opts );
 
-	if ($opts['btn'] === 'restart') arrayDB("UPDATE moda_list SET post_id = 0");
+	// if ($opts['effect'] === 'restart') arrayDB("UPDATE moda_list SET post_id = 0"); // отклбчил так как сложно удалить 100к+ товаров
 
 	$errors = [];
 
@@ -461,7 +461,7 @@ function kw_insert_post($opts = [])
 
 	$cat_ids = array_column($cats, 'wp_cat_id', 'CategoryID');
 
-	$moda_list_arr = arrayDB("SELECT * FROM moda_list WHERE country = 'DE' AND flag = 'dataparsed1' AND post_id = 0  LIMIT $opts[limit]");
+	$moda_list_arr = arrayDB("SELECT * FROM moda_list WHERE country = 'DE' AND flag = 'dataparsed1' AND ListingType = 'FixedPriceItem' AND post_id = 0  LIMIT $opts[limit]");
 
 	foreach ($moda_list_arr as $moda_list) :
 
@@ -495,25 +495,16 @@ function kw_insert_post($opts = [])
 			'currentPrice' => $moda_arr['currentPrice'],
 		];
 
-		// return;
-		// Создаем массив
 		$post_data = array(
-			// 'ID'             => <post id>,                                                     // Вы обновляете существующий пост?
-			// 'menu_order'     => <order>,                                                       // Если запись "постоянная страница", установите её порядок в меню.
 			'comment_status' => 'closed',                                             // 'closed' означает, что комментарии закрыты.
 			'ping_status'    => 'closed',                                             // 'closed' означает, что пинги и уведомления выключены.
 			'post_author'    => 1,                                                     // ID автора записи
 			'post_content'   => $moda_arr['Description'],                                        // Полный текст записи.
 			'post_excerpt'   => json_encode($post_excerpt),                                                  // Цитата (пояснительный текст) записи.
 			'post_name'      => $moda_arr['title'],                             // Альтернативное название записи (slug) будет использовано в УРЛе.
-			// 'post_parent'    => <post ID>,                                                     // ID родительской записи, если нужно.
-			// 'post_password'  => ?,                                                             // Пароль для просмотра записи.
 			'post_status'    => 'publish',         // Статус создаваемой записи.
 			'post_title'     => $moda_arr['title'],                                                   // Заголовок (название) записи.
 			'post_type'      => 'moda', // Тип записи.
-			// 'post_category'  => array( <category id>, <...> ),                                   // Категория к которой относится пост.
-			// 'tags_input'     => array( <tag>, <tag>, <...> ),                                         // Метки поста (указываем ярлыки, имена или ID).
-			// 'tax_input'      => array( 'taxonomy_name' => array( 'term', 'term2', 'term3' ) ), // К каким таксам прикрепить запись. Аналог 'post_category', только для для новых такс.
 			'meta_input'     => $moda_arr,                             // добавит указанные мета поля. По умолчанию: ''. с версии 4.4.
 		);
 
@@ -547,9 +538,11 @@ function kw_insert_post($opts = [])
 function kw_update_post($opts = [])
 {
 	$opts = array_merge ( [
-		'btn' => '',
+		'effect' => '',
 		'limit' => '10'
 	], $opts );
+
+	if ($opts['effect'] === 'restart') arrayDB("UPDATE moda_list SET flag2 = ''");
 
 	$errors = [];
 
@@ -557,7 +550,7 @@ function kw_update_post($opts = [])
 
 	$flag_value = 'updated3';
 
-	$moda_list_arr = arrayDB("SELECT * FROM moda_list WHERE flag2 <> '$flag_value' AND post_id <> 0  LIMIT $opts[limit]");
+	$moda_list_arr = arrayDB("SELECT * FROM moda_list WHERE flag2 <> '$flag_value' AND post_id <> 0  LIMIT $opts[limit]"); // $flag_value = 'updated3';
 
 	foreach ($moda_list_arr as $moda_list) :
 
@@ -586,13 +579,19 @@ function kw_update_post($opts = [])
 		}
 		else {
 			$post_ids[] = $post_id;
-			arrayDB("UPDATE moda_list SET flag2 = '$flag_value' WHERE id = '$moda_list[id]'");
+			arrayDB("UPDATE moda_list SET flag2 = '$flag_value' WHERE id = '$moda_list[id]'"); // $flag_value = 'updated3';
 		}
 
 	endforeach;
 
+	$total = arrayDB("SELECT count(*) FROM moda_list WHERE post_id <> 0")[0]['count(*)'];
+	$done = arrayDB("SELECT count(*) FROM moda_list WHERE flag2 = '$flag_value' AND post_id <> 0")[0]['count(*)'];
+
+	$progress = "[ $done/$total ] (".round($done/$total*100, 1)."%)";
+
 	return [
 		'keep_going' => count($moda_list_arr) ? 1 : 0,
+		'progress' => $progress,
 		'post_ids' => $post_ids,
 		'errors' => $errors,
 	];
@@ -606,22 +605,23 @@ add_action( 'wp_ajax_pult', 'ajax_pult_page' ); // wp_ajax_{ЗНАЧЕНИЕ П�
  
 function ajax_pult_page()
 {
+	$ret = '';
 
 	if ($_POST['act'] === 'insert') {
-		$ret = kw_insert_post();
+		$ret = kw_insert_post([ 'effect' => $_POST['effect']]);
 	}
 	if ($_POST['act'] === 'update') {
 		// sleep(1);
-		$ret = kw_update_post();
+		$ret = kw_update_post([ 'effect' => $_POST['effect']]);
 	}
 
-	echo json_encode($_POST);
+	echo json_encode($ret);
  
 	die; // даём понять, что обработчик закончил выполнение
 }
 
 
-function kw_modablock_imgsrc($data)
+function kw_modablock_imgsrc($ret)
 {
 	if ($data) {
 		$hashes = $data['PictureURL'];

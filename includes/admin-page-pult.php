@@ -23,7 +23,7 @@ if (isset($_POST['optimize_db']) && $_POST['optimize_db'] === 'do-queries') {
 	<fieldset><hr>
 	    <legend><b>Add</b> new moda pages</legend>
 	    <button name="insert" value="continue" type="button" class="js-pp-btn js-tobe-disabled"><i class="dashicons dashicons-controls-play"></i> Continue!</button>
-	    <button name="insert" value="restart" type="button" class="js-pp-btn js-tobe-disabled"><i class="dashicons dashicons-controls-skipback"></i> Restart!</button>
+	    <!-- <button name="insert" value="restart" type="button" class="js-pp-btn js-tobe-disabled"><i class="dashicons dashicons-controls-skipback"></i> Restart!</button> -->
 	    <button name="pause" value="pause" type="button" class="js-pp-btn js-pause-btn"><i class="dashicons dashicons-controls-pause"></i> Pause!</button>
 	</fieldset>
 </form>
@@ -31,8 +31,9 @@ if (isset($_POST['optimize_db']) && $_POST['optimize_db'] === 'do-queries') {
 	<fieldset><hr>
 	    <legend><b>Update</b> moda pages</legend>
 	    <button name="update" value="continue" type="button" class="js-pp-btn js-tobe-disabled"><i class="dashicons dashicons-controls-play"></i> Continue!</button>
-	    <button name="update" value="restart" type="button" class="js-pp-btn js-tobe-disabled"><i class="dashicons dashicons-controls-skipback"></i> Restart!</button>
+	    <button name="update" value="restart" type="button" class="js-pp-btn js-tobe-disabled"><i class="dashicons dashicons-controls-repeat"></i> Restart!</button>
 	    <button name="pause" value="pause" type="button" class="js-pp-btn js-pause-btn"><i class="dashicons dashicons-controls-pause"></i> Pause!</button>
+	    <span id="update_progress"></span>
 	</fieldset>
 </form>
 <script>
@@ -44,7 +45,7 @@ jQuery(function($){
 		var act = this.name
 		var effect = this.value
 		var send = {action:'pult', act:act, effect:effect}
-		if (effect === 'pause') {
+		if (act === 'pause') {
 			pause = true
 			$('.js-tobe-disabled').attr('disabled', false)
 		}else{
@@ -53,8 +54,10 @@ jQuery(function($){
 	});
 	function do_ajax(send) {
 		$.post(ajaxurl,	send, function(data){
+			if(data.progress) $('#update_progress').html(data.progress);
 				if ( !pause && data.keep_going ) {
-					do_ajax('continue')
+					send.effect = 'continue'
+					do_ajax(send)
 				}
 			}, 'json');
 	}
