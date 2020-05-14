@@ -58,7 +58,7 @@
         </div>
     </header><!-- #masthead -->
 
-    <div class="container">
+    <div class="container kw-page-banner">
         <?php
             if(is_tax()) kw_page_banner();
         ?>

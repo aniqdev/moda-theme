@@ -18,9 +18,10 @@ get_header(); ?>
 }
 </style>
 
-	<div id="modablocks" class="container content-area" style="width: 100%;" file="<?= basename(__FILE__); ?>">
+	<div id="modablocks" class="container content-area moda-category" style="width: 100%;" file="<?= basename(__FILE__); ?>">
 		<main id="main" class="site-main row" role="main">
-
+		
+		<h1 class="category-title"><?= get_queried_object()->name; ?></h1>
 		<?php
 		if ( have_posts() ) : ?>
 

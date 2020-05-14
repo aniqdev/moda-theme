@@ -448,7 +448,8 @@ function kw_insert_post($opts = [])
 {
 	$opts = array_merge ( [
 		'effect' => '',
-		'limit' => '10'
+		'limit' => '10',
+		'insertByModaId' => false,
 	], $opts );
 
 	// if ($opts['effect'] === 'restart') arrayDB("UPDATE moda_list SET post_id = 0"); // отклбчил так как сложно удалить 100к+ товаров
@@ -461,7 +462,8 @@ function kw_insert_post($opts = [])
 
 	$cat_ids = array_column($cats, 'wp_cat_id', 'CategoryID');
 
-	$moda_list_arr = arrayDB("SELECT * FROM moda_list WHERE country = 'DE' AND flag = 'dataparsed1' AND ListingType = 'FixedPriceItem' AND post_id = 0  LIMIT $opts[limit]");
+	if($opts['insertByModaId']) $moda_list_arr = arrayDB("SELECT * FROM moda_list WHERE id = '{$opts['insertByModaId']}'");
+	else $moda_list_arr = arrayDB("SELECT * FROM moda_list WHERE country = 'DE' AND flag = 'dataparsed1' AND ListingType = 'FixedPriceItem' AND post_id = 0  LIMIT $opts[limit]");
 
 	foreach ($moda_list_arr as $moda_list) :
 
@@ -539,7 +541,8 @@ function kw_update_post($opts = [])
 {
 	$opts = array_merge ( [
 		'effect' => '',
-		'limit' => '10'
+		'limit' => '10',
+		'updateByModaId' => false,
 	], $opts );
 
 	if ($opts['effect'] === 'restart') arrayDB("UPDATE moda_list SET flag2 = ''");
@@ -549,9 +552,10 @@ function kw_update_post($opts = [])
 	$post_ids = [];
 
 	$flag_value = 'updated3';
-
-	$moda_list_arr = arrayDB("SELECT * FROM moda_list WHERE flag2 <> '$flag_value' AND post_id <> 0  LIMIT $opts[limit]"); // $flag_value = 'updated3';
-
+	if($opts['updateByModaId']) $sql = "SELECT * FROM moda_list WHERE id = '{$opts['updateByModaId']}'";
+	else $sql = "SELECT * FROM moda_list WHERE flag2 <> '$flag_value' AND post_id <> 0  LIMIT $opts[limit]"; // $flag_value = 'updated3';
+	$moda_list_arr = arrayDB($sql);
+// sa($moda_list_arr);
 	foreach ($moda_list_arr as $moda_list) :
 
 		$moda_meta = get_moda_meta($moda_list['id']);
@@ -559,6 +563,10 @@ function kw_update_post($opts = [])
 		$moda_arr = array_merge($moda_list, $moda_meta);
 
 		$moda_arr['moda_id'] = $moda_list['id'];
+		unset($moda_arr['id']);
+		unset($moda_arr['flag']);
+		unset($moda_arr['flag2']);
+		// unset($moda_arr['post_id']);
 
 		$post_excerpt = [
 			'PictureURL' => $moda_arr['PictureURL'],
@@ -567,10 +575,11 @@ function kw_update_post($opts = [])
 			'currentPrice' => $moda_arr['currentPrice'],
 		];
 
-		$post_data = array(
+		$post_data = [
 			'ID'             => $moda_arr['post_id'],
 			'post_excerpt'   => json_encode($post_excerpt),
-		);
+			// 'meta_input'     => $moda_arr, // или не нужно???
+		];
 
 		// Вставляем данные в БД
 		$post_id = wp_update_post( wp_slash($post_data) );
@@ -593,7 +602,39 @@ function kw_update_post($opts = [])
 		'keep_going' => count($moda_list_arr) ? 1 : 0,
 		'progress' => $progress,
 		'post_ids' => $post_ids,
+		'$moda_arr' => $moda_arr,
+		'$sql' => $sql,
 		'errors' => $errors,
+	];
+}
+
+
+function kw_delete_expired($moda_id = '')
+{
+	if($moda_id) $post_id = arrayDB("SELECT id,post_id FROM moda_list WHERE id = '$moda_id'");
+	else $post_id = arrayDB("SELECT id,post_id FROM moda_list WHERE post_id <> 0 AND endTime < NOW() limit 1");
+
+	if ($post_id) {
+		$post_id = $post_id[0]['post_id'];
+		$res = wp_delete_post( $post_id );
+		if ($res !== false) {
+			$done = 'if';
+			arrayDB("UPDATE moda_list SET post_id = '0' WHERE post_id = '$post_id'");
+		}else{
+			$done = 'else';
+		}
+	}
+
+	$expired_count = arrayDB("SELECT count(*) FROM moda_list WHERE post_id <> 0 AND endTime < NOW()")[0]['count(*)'];
+	
+	return [
+		'keep_going' => $post_id ? 1 : 0,
+		'expired' => $expired_count,
+		'$post_id' => $post_id,
+		'$res' => $res,
+		'$done' => $done,
+		'deleted' => is_object($res),
+		// 'errors' => $errors,
 	];
 }
 
@@ -611,8 +652,10 @@ function ajax_pult_page()
 		$ret = kw_insert_post([ 'effect' => $_POST['effect']]);
 	}
 	if ($_POST['act'] === 'update') {
-		// sleep(1);
 		$ret = kw_update_post([ 'effect' => $_POST['effect']]);
+	}
+	if ($_POST['act'] === 'delete') {
+		$ret = kw_delete_expired([ 'effect' => $_POST['effect']]);
 	}
 
 	echo json_encode($ret);
@@ -621,10 +664,10 @@ function ajax_pult_page()
 }
 
 
-function kw_modablock_imgsrc($ret)
+function kw_modablock_imgsrc($excerpt_data)
 {
-	if ($data) {
-		$hashes = $data['PictureURL'];
+	if ($excerpt_data) {
+		$hashes = $excerpt_data['PictureURL'];
 	}else{
 		return 'https://place-hold.it/300x200?text=No+Image&bold=true';
 	}
@@ -753,4 +796,33 @@ function kw_page_banner($img_urls = '')
 function is_amp_page()
 {
 	return isset($_GET['amp']);
+}
+
+
+
+function msync_insert_moda_page($moda_id = '')
+{
+	if(!$moda_id) return false;
+	$moda_id = trim($moda_id);
+	$moda_id = (int)$moda_id;
+	$res = kw_insert_post(['insertByModaId' => $moda_id]);
+	return $res['post_ids'] ? 1 : 0;
+}
+
+function msync_update_moda_page($moda_id = '')
+{
+	if(!$moda_id) return false;
+	$moda_id = trim($moda_id);
+	$moda_id = (int)$moda_id;
+	$res = kw_update_post(['updateByModaId' => $moda_id]);
+	return $res['post_ids'] ? 1 : 0;
+}
+
+function msync_delete_moda_page($moda_id = '')
+{
+	if(!$moda_id) return false;
+	$moda_id = trim($moda_id);
+	$moda_id = (int)$moda_id;
+	$res = kw_delete_expired($moda_id);
+	return $res['deleted'] ? 1 : 0;
 }

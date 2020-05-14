@@ -18,7 +18,7 @@ $permalink = esc_url( get_permalink() );
 <article id="post-<?php the_ID(); ?>" <?php post_class('modablock row col-xs-6 col-sm-12'); ?> file="<?= basename(__FILE__); ?>">
 	
 	<?php // kumle_post_thumbnail(); ?>
-	<div class="col-xs-12 col-sm-2">
+	<div class="col-xs-12 col-sm-2 img-wrapper">
 		<a class="img-wrapper" href="<?= $permalink; ?>" rel="bookmark">
 			<span class="img-bg" style="background-image: url('<?= kw_modablock_imgsrc($excerpt_data); ?>')"></span>
 			<img class="img-main" src="<?= kw_modablock_imgsrc($excerpt_data); ?>" alt="<?= esc_attr(get_the_title()); ?>">

@@ -1,6 +1,6 @@
 <?php
 
-
+$expired_count = arrayDB("SELECT count(*) FROM moda_list WHERE post_id <> 0 AND endTime < NOW()")[0]['count(*)'];
 
 ?>
 <h1>Hallo World!!!</h1>
@@ -36,10 +36,19 @@ if (isset($_POST['optimize_db']) && $_POST['optimize_db'] === 'do-queries') {
 	    <span id="update_progress"></span>
 	</fieldset>
 </form>
+<form id="js_go_form3" class="go-form"><br><br>
+	<fieldset><hr>
+	    <legend><b>Delete expired</b> moda pages</legend>
+	    <p>There is [ <b id="expired_count"><?= $expired_count; ?></b> ] expired moda pages</p>
+	    <button name="delete" value="expired" type="button" class="js-pp-btn js-tobe-disabled"><i class="dashicons dashicons-trash"></i> Delete!</button>
+	</fieldset>
+</form>
 <script>
 jQuery(function($){
 	var pause = false
 	$('.js-pp-btn').click(function(e){
+		if(this.value === 'restart' && !confirm("Restart?")) return false;
+		if(this.name === 'delete' && !confirm("Delete?")) return false;
 		$('.js-tobe-disabled').attr('disabled', true)
 		pause = false
 		var act = this.name
@@ -55,6 +64,7 @@ jQuery(function($){
 	function do_ajax(send) {
 		$.post(ajaxurl,	send, function(data){
 			if(data.progress) $('#update_progress').html(data.progress);
+			if(data.expired) $('#expired_count').html(data.expired);
 				if ( !pause && data.keep_going ) {
 					send.effect = 'continue'
 					do_ajax(send)

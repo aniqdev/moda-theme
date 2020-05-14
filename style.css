@@ -714,11 +714,19 @@ a:active {
 	color: #66A3D9;
 }
 
+.main-navigation ul li:hover,
+.main-navigation ul li:hover a{
+	color: #ffffff;
+	text-decoration: underline;
+	background: #100e1c;
+}
+
 .main-navigation ul li.current-menu-item a,
 .main-navigation ul li a:hover,
 .main-navigation ul li.menu-item-has-children ul.sub-menu li.current-menu-item a {
 	color: #ffffff;
 	text-decoration: underline;
+	background: #100e1c;
 }
 
 .main-navigation ul li.menu-item-has-children > a::after, .main-navigation ul li.page_item_has_children > a::after {
@@ -3361,6 +3369,7 @@ button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:transpa
 	overflow-x: scroll;
 	font-size: 14px;
 	margin: 0 -5px 15px;
+    justify-content: center;
 }
 
 .beadcrubs>span{
@@ -3379,6 +3388,35 @@ button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:transpa
 	text-indent: -18px;
 	font-size: 15px;
 	line-height: 18px;
+}
+
+.moda-middle-menu{
+	text-align: center;
+    background: #ececec;
+    line-height: 42px;
+    letter-spacing: 2px;
+    margin: 40px -15px;
+}
+
+.moda-middle-menu a{
+	position: relative;
+}
+
+.moda-middle-menu a::before{
+	content: ' ';
+    display: block;
+    width: 8px;
+    height: 8px;
+    background: #999;
+    position: absolute;
+    border-radius: 10px;
+    top: 50%;
+    left: -15px;
+    margin-top: -3px;
+}
+
+.single-moda .name-value-list .text-left{
+	text-align: left;
 }
 
 
@@ -3693,30 +3731,16 @@ button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:transpa
 
 /* All Mobile Sizes (devices and browser) */
 @media only screen and (max-width:767px) {
-
-	h1 {
-		font-size: 22px;
+	
+	#moda_page_carousel .carousel-item .modablock:nth-of-type(n+3){
+		display: none;
 	}
-
-	h2 {
-		font-size: 20px;
-	}
-
-	h3{
-		font-size: 17px;
-	}
-
-	h4 {
-		font-size:16px;
-	}
-
-	h5 {
-		font-size: 17px;
-	}
-
-	h6 {
-		font-size: 17px;
-	}
+	h1 {		font-size: 22px;	}
+	h2 {		font-size: 20px;	}
+	h3 {		font-size: 17px;	}
+	h4 {		font-size:16px;		}
+	h5 {		font-size: 17px;	}
+	h6 {		font-size: 17px;	}
 
 	#footer-widgets, #colophon {
 		margin-left: 0;
@@ -3822,7 +3846,7 @@ button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:transpa
 
    .single #primary .post .entry-title {
 		font-size: 25px;
-   }
+    }
 
 	.search-social {
 		width: 100%;
@@ -3914,4 +3938,70 @@ button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:transpa
 		margin-right: 2px;
 	}
 	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media only screen and (min-width:768px){
+	.tax-moda_category .kw-page-banner{
+		display: none;
+	}
+	.moda-category .modablock{
+		width: 16.666%;
+	}
+	.moda-category .modablock .img-wrapper{
+		width: 100%;
+	}
+	.moda-category .modablock .content-wrap{
+		width: 100%;
+	}
+	.moda-category .category-title{
+		width: 100%;
+    	text-align: center;
+	}
+	.single-moda .inner-baner{
+		display: none;
+	}
+	.prev-next-post .-next{
+		text-align: right;
+	}
+	#moda_page_carousel .carousel-item-row .modablock{
+		width: 33.3333%;
+		display: flex;
+    	flex-direction: column;
+	}
+	#moda_page_carousel .carousel-indicators{
+		bottom: -7px;
+	}
+	#modablocks .modablock .img-wrapper{
+		width: 100%;
+		height: 385px;
+	}
+	.single-moda .-content{
+	    padding: 15px;
+	}
+	.single-moda .info{
+		position: relative;
+	    padding-bottom: 86px;
+	}
+	.single-moda .info .info-more{
+	    position: absolute;
+	    bottom: 0;
+	    width: 100%;
+	}
+	.single-moda .info .info-more .-readmore {
+	    padding: 5px 15px;
+	    font-size: 20px;
+	    margin-bottom: 0;
+	}
 }
