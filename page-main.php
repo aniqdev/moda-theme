@@ -75,12 +75,32 @@ get_header();
 	</div>
 </div>
 
+<?php
+$myposts = get_posts( [
+    'post_type' => 'moda',
+    'numberposts' => 6,
+] );
+?>
+<div class="container desktop-only">
+	<div class="row middle-block">
+		<div class="col-xs-12 col-sm-5 -leftimg">
+			<img src="https://modetoday.de/wp-content/themes/moda-theme/images/slide-2.jpg" alt="">
+		</div>
+		<div class="col-xs-12 col-sm-7 mp-product-list" id="modablocks">
+			<div class="row">
+			<?php
+			    foreach ( $myposts as $key => $post ) : setup_postdata( $post ); 
+					echo '<div class="col-xs-6 col-sm-4">';
+			        get_template_part( 'template-parts/content', 'modablock' );
+			        echo '</div>';
+			    endforeach;
+			    wp_reset_postdata();
+			?>
+			</div>
+		</div>
+	</div>
+</div>
 
-<script>
-jQuery(function($) {
-	// $('.carousel').carousel()
-})
-</script>
 
 <?php
 get_footer();

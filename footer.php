@@ -41,7 +41,7 @@
 			</div>
 		</div>
 	</footer> --><!-- #colophon -->
-<?php if(!IS_FRONT_PAGE): ?>
+<?php if(1 || !IS_FRONT_PAGE): // отключили блокировку для главной ?>
 	<footer class="footer">
 		<div class="container">
 			<div class="row">

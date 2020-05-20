@@ -349,7 +349,7 @@ function init_insert_cat_page() {include_once KW_TEMPLATE_DIRECTORY . '/includes
 
 add_action( 'init', 'register_moda_post_type' );
 function register_moda_post_type(){
-	register_post_type('moda', array(
+	register_post_type('fashion', array(
 		'label'  => null,
 		'labels' => array(
 			'name'               => 'Moda pages', // основное название для типа записи
@@ -382,7 +382,7 @@ function register_moda_post_type(){
 		//'map_meta_cap'      => null, // Ставим true чтобы включить дефолтный обработчик специальных прав
 		'hierarchical'        => false,
 		'supports'            => [ 'title', 'editor', 'custom-fields', 'thumbnail', 'excerpt' ], // 'title','editor','author','thumbnail','excerpt','trackbacks','custom-fields','comments','revisions','page-attributes','post-formats'
-		'taxonomies'          => ['moda_category'],
+		'taxonomies'          => ['fashion_category'],
 		'has_archive'         => false,
 		'rewrite'             => true,
 		'query_var'           => true,
@@ -398,13 +398,13 @@ function register_moda_post_type(){
 // 	unregister_taxonomy('color');
 // }
 // хук для регистрации
-add_action( 'init', 'create_moda_category_taxonomy' );
-function create_moda_category_taxonomy(){
+add_action( 'init', 'create_fashion_category_taxonomy' );
+function create_fashion_category_taxonomy(){
 
 	// unregister_taxonomy('color');
 	// return;
 	// список параметров: wp-kama.ru/function/get_taxonomy_labels
-	register_taxonomy( 'moda_category', [ 'moda' ], [ 
+	register_taxonomy( 'fashion_category', [ 'fashion' ], [ 
 		'label'                 => 'Categories', // определяется параметром $labels->name
 		'labels'                => [
 			'name'              => 'Categories',
@@ -506,7 +506,7 @@ function kw_insert_post($opts = [])
 			'post_name'      => $moda_arr['title'],                             // Альтернативное название записи (slug) будет использовано в УРЛе.
 			'post_status'    => 'publish',         // Статус создаваемой записи.
 			'post_title'     => $moda_arr['title'],                                                   // Заголовок (название) записи.
-			'post_type'      => 'moda', // Тип записи.
+			'post_type'      => 'fashion', // Тип записи.
 			'meta_input'     => $moda_arr,                             // добавит указанные мета поля. По умолчанию: ''. с версии 4.4.
 		);
 
@@ -520,7 +520,7 @@ function kw_insert_post($opts = [])
 			// sa($moda_arr['categoryId']);
 			// sa($cat_ids);
 			arrayDB("UPDATE moda_list SET post_id = '$post_id' WHERE id = '$moda_list[id]'");
-			if($cat = @(int)$cat_ids[$moda_arr['categoryId']]) wp_set_post_terms( $post_id, [$cat], 'moda_category' );
+			if($cat = @(int)$cat_ids[$moda_arr['categoryId']]) wp_set_post_terms( $post_id, [$cat], 'fashion_category' );
 			// add_post_meta( $post_id, 'test_meta_key', 'test_meta_value', $unique = true );
 			// update_post_meta( $post_id, 'key_1', 'Excited' );
 			// теперь можно использовать $post_id, чтобы например добавить

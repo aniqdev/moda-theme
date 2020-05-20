@@ -12,7 +12,7 @@ if (isset($_GET['amp'])) {
 
 	get_header('amp');
 
-	include __DIR__.'/single-moda-amp.php';
+	include __DIR__.'/single-fashion-amp.php';
 
 	get_footer('amp');
 
@@ -20,7 +20,7 @@ if (isset($_GET['amp'])) {
 
 	get_header();
 
-	include __DIR__.'/single-moda-original.php';
+	include __DIR__.'/single-fashion-original.php';
 
 	get_footer();
 

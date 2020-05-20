@@ -28,14 +28,14 @@
 
 	unset($moda_meta['PictureURL']);
 
-	$term_id = wp_get_post_terms(get_the_ID(), 'moda_category')[0]->term_id;
+	$term_id = wp_get_post_terms(get_the_ID(), 'fashion_category')[0]->term_id;
 
 	if($term_id): 
 		$args = [
-		    'post_type' => 'moda',
+		    'post_type' => 'fashion',
 		    'tax_query' => [
 		        [
-		            'taxonomy' => 'moda_category',
+		            'taxonomy' => 'fashion_category',
 		            'terms' => $term_id,
 		        ],
 		    ],

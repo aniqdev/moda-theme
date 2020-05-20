@@ -244,16 +244,19 @@ font-style: normal;
 	padding: 0;
 }
 
-html, body,
-.front-page,
-.front-page #content,
-.front-page #content .container,
-.front-page #content .container .inner-wrapper,
-.front-page #content .container .inner-wrapper .main-page-slider,
-.front-page #content .container .inner-wrapper .main-page-slider .carousel,
-.front-page #content .container .inner-wrapper .main-page-slider .carousel-inner,
-.front-page #content .container .inner-wrapper .main-page-slider .carousel-inner .carousel-item{
-	height: 100%;
+@media only screen and (max-width:767px){
+
+  html, body,
+  .front-page,
+  .front-page #content,
+  .front-page #content .container,
+  .front-page #content .container .inner-wrapper,
+  .front-page #content .container .inner-wrapper .main-page-slider,
+  .front-page #content .container .inner-wrapper .main-page-slider .carousel,
+  .front-page #content .container .inner-wrapper .main-page-slider .carousel-inner,
+  .front-page #content .container .inner-wrapper .main-page-slider .carousel-inner .carousel-item{
+    height: 100%;
+  }
 }
 
 .page-template-page-main #wpadminbar {
