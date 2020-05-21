@@ -16,6 +16,12 @@
 	
 	$the_title = esc_attr(get_the_title());
 	
+	$the_excerpt = get_the_excerpt();
+
+	$the_excerpt = json_decode($the_excerpt, true);
+
+	// sa($the_excerpt);
+
 	$moda_meta = get_post_custom();
 	$moda_meta = array_map(function($value)
 	{
@@ -78,7 +84,7 @@
 		<h1 class="-title" itemprop="name"><?= $the_title; ?></h1>
 		<div class="info-more">
 			<div class="entry-content moda-block-bottom" itemprop="offers" itemtype="http://schema.org/Offer" itemscope>
-				<div class="moda-block-price"><span itemprop="price">55.00</span> €</div>
+				<div class="moda-block-price"><span itemprop="price"><?= $the_excerpt['currentPrice']; ?></span> €</div>
 		        <link itemprop="url" href="<?= ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>">
 		        <meta itemprop="priceValidUntil" content="<?= date('Y-m-d', time() + 60*60*24*30 ); ?>" />
 		        <meta itemprop="availability" content="https://schema.org/InStock">
@@ -86,7 +92,7 @@
 		        <meta itemprop="itemCondition" content="https://schema.org/UsedCondition">
 				<div class="moda-block-readmore">
 					<i class="star dashicons dashicons-star-empty">&nbsp;</i>
-					<div class="sold">123</div>
+					<div class="sold"><?= $the_excerpt['QuantitySold']; ?></div>
 				</div>
 			</div>
 			<meta itemprop="mpn" content="<?php the_ID(); ?>" />
@@ -135,10 +141,10 @@
 
 
 <div class="moda-middle-menu row">
-	<div class="col-xs-12 col-sm-3"><a href="https://modetoday.de/moda_category/womens-bags-handbags/">Damentaschen</a></div>
-	<div class="col-xs-12 col-sm-3"><a href="https://modetoday.de/moda_category/womens-clothing/">Damenmode</a></div>
-	<div class="col-xs-12 col-sm-3"><a href="https://modetoday.de/moda_category/womens-shoes/">Damenschuhe</a></div>
-	<div class="col-xs-12 col-sm-3"><a href="https://modetoday.de/moda_category/womens-accessories/">Damen-Accessoires</a></div>
+	<div class="col-xs-12 col-sm-3"><a href="https://modetoday.de/fashion_category/womens-bags-handbags/">Damentaschen</a></div>
+	<div class="col-xs-12 col-sm-3"><a href="https://modetoday.de/fashion_category/womens-clothing/">Damenmode</a></div>
+	<div class="col-xs-12 col-sm-3"><a href="https://modetoday.de/fashion_category/womens-shoes/">Damenschuhe</a></div>
+	<div class="col-xs-12 col-sm-3"><a href="https://modetoday.de/fashion_category/womens-accessories/">Damen-Accessoires</a></div>
 </div>
     		
 	      		

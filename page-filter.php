@@ -15,7 +15,7 @@ get_header(); ?>
 <!-- Filter -->
 <form action="<?php echo site_url() ?>/wp-admin/admin-ajax.php" method="POST" id="filter">
 	<?php
-	if( $terms = get_terms( 'moda_category', 'orderby=name' ) ) : // как я уже говорил, для простоты возьму рубрики category, но get_terms() позволяет работать с любой таксономией
+	if( $terms = get_terms( 'fashion_category', 'orderby=name' ) ) : // как я уже говорил, для простоты возьму рубрики category, но get_terms() позволяет работать с любой таксономией
 		echo '<select name="categoryfilter"><option>Выберите категорию...</option>';
 		foreach ($terms as $term) :
 			echo '<option value="' . $term->term_id . '">' . $term->name . '</option>'; // в качестве value я взял ID рубрики

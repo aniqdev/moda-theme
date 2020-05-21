@@ -34,7 +34,7 @@ foreach ($level4 as $val) {
 
 	$insert_data = wp_insert_term(
 		$val['CategoryName_DE'],  // новый термин
-		'moda_category', // таксономия
+		'fashion_category', // таксономия
 		array(
 			'description' => $val['CategoryName'],
 			'slug'        => $val['CategoryName'],
@@ -65,7 +65,7 @@ $parent_term_id = defined('DEV_MODE') ? 60 : 149;
 foreach ($level3 as $val) {
 	$insert_data = wp_insert_term(
 		$val['CategoryName_DE'],  // новый термин
-		'moda_category', // таксономия
+		'fashion_category', // таксономия
 		array(
 			'description' => $val['CategoryName'],
 			'slug'        => $val['CategoryName'],

@@ -29,39 +29,39 @@ get_header();
 	  <div class="carousel-inner">
 	    <div class="carousel-item active" style="background-image: url('<?= KW_TEMPLATE_DIRECTORY_URI; ?>/images/slide-1.jpg')">
 	      	<div class="carousel-menu">
-	      		<a class="text-underline" href="https://modetoday.de/moda_category/womens-bags-handbags/">Damentaschen</a>
-	      		<a href="https://modetoday.de/moda_category/womens-clothing/">Damenmode</a>
-	      		<a href="https://modetoday.de/moda_category/womens-shoes/">Damenschuhe</a>
-	      		<a href="https://modetoday.de/moda_category/womens-accessories/">Damen-Accessoires</a>
+	      		<a class="text-underline" href="https://modetoday.de/fashion_category/womens-bags-handbags/">Damentaschen</a>
+	      		<a href="https://modetoday.de/fashion_category/womens-clothing/">Damenmode</a>
+	      		<a href="https://modetoday.de/fashion_category/womens-shoes/">Damenschuhe</a>
+	      		<a href="https://modetoday.de/fashion_category/womens-accessories/">Damen-Accessoires</a>
 	      	</div>
-	  		<a href="https://modetoday.de/moda_category/womens-bags-handbags/" class="category-link">VIEW</a>
+	  		<a href="https://modetoday.de/fashion_category/womens-bags-handbags/" class="category-link">VIEW</a>
 	    </div>
 	    <div class="carousel-item" style="background-image: url('<?= KW_TEMPLATE_DIRECTORY_URI; ?>/images/slide-2.jpg')">
 	      	<div class="carousel-menu">
-	      		<a href="https://modetoday.de/moda_category/womens-bags-handbags/">Damentaschen</a>
-	      		<a class="text-underline" href="https://modetoday.de/moda_category/womens-clothing/">Damenmode</a>
-	      		<a href="https://modetoday.de/moda_category/womens-shoes/">Damenschuhe</a>
-	      		<a href="https://modetoday.de/moda_category/womens-accessories/">Damen-Accessoires</a>
+	      		<a href="https://modetoday.de/fashion_category/womens-bags-handbags/">Damentaschen</a>
+	      		<a class="text-underline" href="https://modetoday.de/fashion_category/womens-clothing/">Damenmode</a>
+	      		<a href="https://modetoday.de/fashion_category/womens-shoes/">Damenschuhe</a>
+	      		<a href="https://modetoday.de/fashion_category/womens-accessories/">Damen-Accessoires</a>
 	      	</div>
-	  		<a href="https://modetoday.de/moda_category/womens-clothing/" class="category-link">VIEW</a>
+	  		<a href="https://modetoday.de/fashion_category/womens-clothing/" class="category-link">VIEW</a>
 	    </div>
 	    <div class="carousel-item" style="background-image: url('<?= KW_TEMPLATE_DIRECTORY_URI; ?>/images/slide-3.jpg')">
 	      	<div class="carousel-menu">
-	      		<a href="https://modetoday.de/moda_category/womens-bags-handbags/">Damentaschen</a>
-	      		<a href="https://modetoday.de/moda_category/womens-clothing/">Damenmode</a>
-	      		<a class="text-underline" href="https://modetoday.de/moda_category/womens-shoes/">Damenschuhe</a>
-	      		<a href="https://modetoday.de/moda_category/womens-accessories/">Damen-Accessoires</a>
+	      		<a href="https://modetoday.de/fashion_category/womens-bags-handbags/">Damentaschen</a>
+	      		<a href="https://modetoday.de/fashion_category/womens-clothing/">Damenmode</a>
+	      		<a class="text-underline" href="https://modetoday.de/fashion_category/womens-shoes/">Damenschuhe</a>
+	      		<a href="https://modetoday.de/fashion_category/womens-accessories/">Damen-Accessoires</a>
 	      	</div>
-	  		<a href="https://modetoday.de/moda_category/womens-shoes/" class="category-link">VIEW</a>
+	  		<a href="https://modetoday.de/fashion_category/womens-shoes/" class="category-link">VIEW</a>
 	    </div>
 	    <div class="carousel-item" style="background-image: url('<?= KW_TEMPLATE_DIRECTORY_URI; ?>/images/slide-4.jpg')">
 	      	<div class="carousel-menu">
-	      		<a href="https://modetoday.de/moda_category/womens-bags-handbags/">Damentaschen</a>
-	      		<a href="https://modetoday.de/moda_category/womens-clothing/">Damenmode</a>
-	      		<a href="https://modetoday.de/moda_category/womens-shoes/">Damenschuhe</a>
-	      		<a class="text-underline" href="https://modetoday.de/moda_category/womens-accessories/">Damen-Accessoires</a>
+	      		<a href="https://modetoday.de/fashion_category/womens-bags-handbags/">Damentaschen</a>
+	      		<a href="https://modetoday.de/fashion_category/womens-clothing/">Damenmode</a>
+	      		<a href="https://modetoday.de/fashion_category/womens-shoes/">Damenschuhe</a>
+	      		<a class="text-underline" href="https://modetoday.de/fashion_category/womens-accessories/">Damen-Accessoires</a>
 	      	</div>
-	  		<a href="https://modetoday.de/moda_category/womens-accessories/" class="category-link">VIEW</a>
+	  		<a href="https://modetoday.de/fashion_category/womens-accessories/" class="category-link">VIEW</a>
 	    </div>
 	  </div>
 	  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -77,7 +77,7 @@ get_header();
 
 <?php
 $myposts = get_posts( [
-    'post_type' => 'moda',
+    'post_type' => 'fashion',
     'numberposts' => 6,
 ] );
 ?>

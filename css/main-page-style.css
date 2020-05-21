@@ -262,8 +262,8 @@ font-style: normal;
 .page-template-page-main #wpadminbar {
     position: fixed;
 }
-html {margin-top: 0 !important;}
-* html body.page-template-page-main { margin-top: 0 !important; }
+/* html {margin-top: 0 !important;}
+* html body.page-template-page-main { margin-top: 0 !important; } */
 @media screen and ( max-width: 782px ) {
 	html {margin-top: 0 !important;}
 	* html body.page-template-page-main { margin-top: 0 !important; }

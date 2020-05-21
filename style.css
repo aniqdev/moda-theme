@@ -3939,6 +3939,11 @@ button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:transpa
 	
 }
 
+.category-title{
+	width: 100%;
+    text-align: center;
+}
+
 
 
 
@@ -4012,9 +4017,9 @@ button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:transpa
 	.front-page .middle-block .-leftimg{
 		padding: 0;
 	}
-	body.admin-bar{
+/* 	body.admin-bar{
 		padding-top: 32px;
-	}
+	} */
 	.front-page .carousel-menu {
 	    right: 100px;
 	    z-index: 2;
@@ -4022,4 +4027,23 @@ button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:transpa
 	.mp-product-list{
 	    padding-top: 25px;
 	}
+	.navigation-wrap > .container {
+	    max-width: 1208px;
+	    padding-right: 15px;
+	    width: 1170px;
+	}
+	#main-nav{
+		background: #ececec;
+    	margin: 0 -15px;
+	    float: none;
+	    width: initial;
+	}
+	.kw-page-banner-wrapper{
+		max-height: 400px;
+    	overflow: hidden;
+	}
+	.kw-page-banner-image{
+		width: 100%;
+	}
+
 }
