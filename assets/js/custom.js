@@ -23,6 +23,22 @@
 			return false;
 		});
 
+
+		// breadcrumb category siblings
+		$.post('/wp-admin/admin-ajax.php',
+			{action:'getsiblingcats'},
+			function(data){
+				// console.log(data)
+				jQuery('.bc-list-item').each(function(el){
+					// console.log(this.dataset.href)
+					if(data[this.dataset.href]){
+						$(this).addClass('have-siblings')
+						$(this).append(data[this.dataset.href].html_list)
+						// console.log(data[this.dataset.href])
+					}
+				})
+			}, 'json');
+
 	});
 
 } )( jQuery );

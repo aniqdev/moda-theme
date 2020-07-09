@@ -62,7 +62,7 @@ jQuery(function($){
 		}
 	});
 	function do_ajax(send) {
-		$.post(ajaxurl,	send, function(data){
+		$.post('/wp-admin/admin-ajax.php',	send, function(data){
 			if(data.progress) $('#update_progress').html(data.progress);
 			if(data.expired) $('#expired_count').html(data.expired);
 				if ( !pause && data.keep_going ) {

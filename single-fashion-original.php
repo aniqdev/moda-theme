@@ -30,6 +30,8 @@
 
 	unset($moda_meta['moda_id']);
 
+	$VariationsPics = json_decode($moda_meta['VariationsPics'], 1);
+
 	$PictureURL = explode(',', $moda_meta['PictureURL']);
 
 	unset($moda_meta['PictureURL']);
@@ -59,14 +61,32 @@
 			  <ol class="carousel-indicators">
 			  	<?php foreach ($PictureURL as $key => $hash): ?>
 			    <li data-target="#moda_page_slider" data-slide-to="<?= $key; ?>" class="<?= $key === 0 ? 'active' : ''; ?>"></li>
-				<?php endforeach ?>
+				<?php endforeach;
+				if($VariationsPics) foreach ($VariationsPics as $pics_meta) {
+					foreach ($pics_meta['VariationSpecificPictureSet'] as $pic) {
+						foreach ($pic['PictureURL'] as $pic): ?>
+						    <li data-target="#moda_page_slider" data-slide-to="<?= ++$key; ?>"></li>
+						<?php endforeach;
+					}
+				} ?>
 			  </ol>
 			  <div class="carousel-inner">
 			  	<?php foreach ($PictureURL as $key => $hash): ?>
 			    <div class="carousel-item <?= $key === 0 ? 'active' : ''; ?>">
 					<img itemprop="image" class="-img" src="<?= get_ebay_pic_url_by_hash($hash, 600); ?>" alt="<?= $the_title; ?>">
 			    </div>
-				<?php endforeach; ?>
+				<?php endforeach;
+
+				if($VariationsPics) foreach ($VariationsPics as $pics_meta) {
+					foreach ($pics_meta['VariationSpecificPictureSet'] as $pic) {
+						foreach ($pic['PictureURL'] as $pic_url): ?>
+						    <div class="carousel-item">
+								<img itemprop="image" class="-img" src="<?= $pic_url; ?>" alt="<?= $the_title; ?>">
+						    </div>
+						<?php endforeach;
+					}
+				}
+ ?>
 			  </div>
 			  <a class="carousel-control-prev" href="#moda_page_slider" role="button" data-slide="prev">
 			    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -119,8 +139,6 @@
 		$ItemSpecifics = json_decode($moda_meta['ItemSpecifics'], 1);
 
 		$Variations = json_decode($moda_meta['Variations'], 1);
-
-		$VariationsPics = json_decode($moda_meta['VariationsPics'], 1);
 
 		$Description = $moda_meta['Description'];
 
@@ -198,7 +216,7 @@ if($Variations) foreach ($Variations as $key => $Variation) {
 <?php endif ?>
 
 <?php
-if($VariationsPics = false) foreach ($VariationsPics as $meta) {
+if(false && $VariationsPics) foreach ($VariationsPics as $meta) {
 	echo '<hr><h4>'.$meta['VariationSpecificName'].'</h4>';
 	foreach ($meta['VariationSpecificPictureSet'] as $pic) {
 		echo '<div class="row">';

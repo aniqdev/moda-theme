@@ -79,6 +79,7 @@ get_header();
 $myposts = get_posts( [
     'post_type' => 'fashion',
     'numberposts' => 6,
+	'orderby'     => 'menu_order',
 ] );
 ?>
 <div class="container desktop-only">

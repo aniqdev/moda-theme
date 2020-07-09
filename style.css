@@ -3418,6 +3418,35 @@ button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:transpa
 	text-align: left;
 }
 
+.moda-cat-sort-select{
+	margin: 11px 0 15px 0;
+    border-radius: 5px;
+}
+
+.bc-list-item.have-siblings{
+	/* position: relative; */
+	border-bottom: 1px dotted #eaeaea;
+}
+
+.breadcrumb-sib-list{
+    position: absolute;
+    margin: 0;
+    list-style: none;
+    background: #fff;
+    z-index: 5;
+    padding: 10px;
+    margin-left: -10px;
+    display: none;
+}
+
+.bc-list-item:hover .breadcrumb-sib-list{
+	display: block;
+}
+
+.breadcrumb-sib-list a:hover{
+	text-decoration: underline;
+}
+
 
 
 
@@ -3944,6 +3973,19 @@ button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:transpa
     text-align: center;
 }
 
+.carousel-indicators {
+    flex-wrap: wrap;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3993,6 +4035,7 @@ button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:transpa
 	}
 	.single-moda .-content{
 	    padding: 15px;
+        word-break: break-word;
 	}
 	.single-moda .info{
 		position: relative;

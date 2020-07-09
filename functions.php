@@ -7,6 +7,24 @@
  * @package Kumle
  */
 
+ // ============== SESSIONS ==============
+add_action('init', 'start_session', 1);
+
+function start_session() {
+	if(!session_id()) {
+		session_start();
+	}
+}
+
+add_action('wp_logout', 'end_session');
+add_action('wp_login', 'end_session');
+add_action('end_session_action', 'end_session');
+
+function end_session() {
+	session_destroy();
+}
+ // ============== SESSIONS ==============
+
 define('KW_TEMPLATE_DIRECTORY', get_template_directory());
 define('KW_TEMPLATE_DIRECTORY_URI', get_template_directory_uri());
 
@@ -503,11 +521,14 @@ function kw_insert_post($opts = [])
 			'post_author'    => 1,                                                     // ID автора записи
 			'post_content'   => $moda_arr['Description'],                                        // Полный текст записи.
 			'post_excerpt'   => json_encode($post_excerpt),                                                  // Цитата (пояснительный текст) записи.
-			'post_name'      => $moda_arr['title'],                             // Альтернативное название записи (slug) будет использовано в УРЛе.
+			'post_name'      => $moda_arr['title'],  
+			'post_parent'   => (float)$moda_arr['currentPrice'] * 100,
+			'menu_order'    => (int)$moda_arr['QuantitySold'],                           // Альтернативное название записи (slug) будет использовано в УРЛе.
 			'post_status'    => 'publish',         // Статус создаваемой записи.
 			'post_title'     => $moda_arr['title'],                                                   // Заголовок (название) записи.
 			'post_type'      => 'fashion', // Тип записи.
-			'meta_input'     => $moda_arr,                             // добавит указанные мета поля. По умолчанию: ''. с версии 4.4.
+			// 'meta_input'     => $moda_arr,                             // добавит указанные мета поля. По умолчанию: ''. с версии 4.4.
+			'post_content_filtered' => ($cat = @(int)$cat_ids[$moda_arr['categoryId']]) ? $cat : '-',
 		);
 
 		// Вставляем данные в БД
@@ -551,6 +572,10 @@ function kw_update_post($opts = [])
 
 	$post_ids = [];
 
+	$cats = arrayDB("SELECT * from moda_cats where wp_cat_id <> 0");
+
+	$cat_ids = array_column($cats, 'wp_cat_id', 'CategoryID');
+
 	$flag_value = 'updated3';
 	if($opts['updateByModaId']) $sql = "SELECT * FROM moda_list WHERE id = '{$opts['updateByModaId']}'";
 	else $sql = "SELECT * FROM moda_list WHERE flag2 <> '$flag_value' AND post_id <> 0  LIMIT $opts[limit]"; // $flag_value = 'updated3';
@@ -578,7 +603,10 @@ function kw_update_post($opts = [])
 		$post_data = [
 			'ID'             => $moda_arr['post_id'],
 			'post_excerpt'   => json_encode($post_excerpt),
+			'post_parent'   => (float)$moda_arr['currentPrice'] * 100,
+			'menu_order'    => (int)$moda_arr['QuantitySold'],
 			// 'meta_input'     => $moda_arr, // или не нужно???
+			'post_content_filtered' => ($cat = @(int)$cat_ids[$moda_arr['categoryId']]) ? $cat : '-',
 		];
 
 		// Вставляем данные в БД
@@ -825,4 +853,72 @@ function msync_delete_moda_page($moda_id = '')
 	$moda_id = (int)$moda_id;
 	$res = kw_delete_expired($moda_id);
 	return $res['deleted'] ? 1 : 0;
+}
+
+
+function set_moda_orderby()
+{
+	if (isset($_GET['orderby']) && $_GET['orderby']) {
+		$orderby_arr = [
+			'' => 'menu_order', 
+			'price' => 'parent',
+			'sold' => 'menu_order',
+		];
+		$orderby = isset($orderby_arr[$_GET['orderby']]) ? $orderby_arr[$_GET['orderby']] : 'menu_order';
+		$_SESSION['orderby'] = $orderby;
+	}elseif(!@$_SESSION['orderby']) {
+		$_SESSION['orderby'] = 'menu_order';
+	}
+	if (isset($_GET['order']) && $_GET['order']) {
+		$_SESSION['order'] = $_GET['order'];
+	}elseif(!@$_SESSION['order']) {
+		$_SESSION['order'] = 'DESC';
+	}
+}
+
+
+function orby_slctd($orderby, $order)
+{
+	if(@$_SESSION['orderby'] === $orderby && @$_SESSION['order'] === $order) return 'selected';
+	return '';
+}
+
+
+add_action( 'wp_ajax_getsiblingcats', 'ajax_get_sibling_cats' ); // wp_ajax_{ЗНАЧЕНИЕ ПАРАМЕТРА ACTION!!}
+add_action( 'wp_ajax_nopriv_getsiblingcats', 'ajax_get_sibling_cats' );  // wp_ajax_nopriv_{ЗНАЧЕНИЕ ACTION!!}
+// первый хук для авторизованных, второй для не авторизованных пользователей
+ 
+function ajax_get_sibling_cats()
+{
+	GLOBAL $wpdb;
+	$home_url =	home_url();
+
+	$terms = $wpdb->get_results( "SELECT * FROM wp_terms
+				JOIN wp_term_taxonomy ON wp_terms.term_id = wp_term_taxonomy.term_id", ARRAY_A );
+
+	$termses = [];
+	foreach ($terms as $term) {
+		if ($term['taxonomy'] === 'fashion_category' && $term['parent']) {
+			$temp_arr = [];
+			$html_list = '';
+			$href = $home_url.'/fashion_category/'.$term['slug'].'/';
+			foreach ($terms as $termo) {
+				if ($term['parent'] === $termo['parent'] && $term['term_id'] !== $termo['term_id']) {
+					$li_href = $home_url.'/fashion_category/'.$termo['slug'].'/';
+					$html_list .= '<li><a href="'.$li_href.'">'.$termo['name'].'</a></li>';
+					$temp_arr[] = [
+						'name' => $termo['name'],
+						'slug' => $termo['slug'],
+					];
+				}
+			}
+			if($temp_arr){
+				$termses[$href]['list'] = $temp_arr;
+				$termses[$href]['html_list'] = '<ul class="breadcrumb-sib-list">'.$html_list.'</ul>';
+			}
+		}
+	}
+
+	echo json_encode($termses);
+	die;
 }
