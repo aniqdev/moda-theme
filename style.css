@@ -3358,7 +3358,7 @@ button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:transpa
 
 .beadcrubs-wrapper{
 	white-space: nowrap;
-	height: 23px;
+	height: 24px;
 	overflow: hidden;
 	margin-bottom: 15px;
 }
@@ -3425,7 +3425,7 @@ button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:transpa
 
 .bc-list-item.have-siblings{
 	/* position: relative; */
-	border-bottom: 1px dotted #eaeaea;
+	border-bottom: 1px dotted #5f5f5f;
 }
 
 .breadcrumb-sib-list{
@@ -3445,6 +3445,14 @@ button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:transpa
 
 .breadcrumb-sib-list a:hover{
 	text-decoration: underline;
+}
+
+.inlineImp{
+	display: none;
+}
+
+.admin-bar .cat-list{
+	padding-top: 50px;
 }
 
 
@@ -3759,7 +3767,9 @@ button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:transpa
 
 /* All Mobile Sizes (devices and browser) */
 @media only screen and (max-width:767px) {
-	
+	.inlineImp{
+		display: block;
+	}
 	#moda_page_carousel .carousel-item .modablock:nth-of-type(n+3){
 		display: none;
 	}

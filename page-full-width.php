@@ -10,7 +10,7 @@
 
 get_header(); ?>
 
-	<div id="primary" class="content-area">
+	<div id="primary" class="content-area" style="float: none; width: 100%;">
 		<main id="main" class="site-main" role="main">
 
 			<?php
@@ -30,6 +30,6 @@ get_header(); ?>
 	</div><!-- #primary -->
 
 <?php
-do_action( 'kumle_action_sidebar' );
+// do_action( 'kumle_action_sidebar' );
 
 get_footer();

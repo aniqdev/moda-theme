@@ -49,12 +49,15 @@
 					<a href="#" class="up" id="go-top">Up</a>
 				</div>
 				<div class="inlineCopy col-xs-12 col-sm-6">
-					<div class="copy">&copy; 2019 - Köln Webstudio - Ihre Webagentur für Webdesign, Webentwicklung, SEO und vieles mehr</div>
+					<div class="copy">&copy; <?= date('Y') ?> - <a href="https://koeln-webstudio.de/" target="_blank">Köln Webstudio</a> - erfolgreiche Webprojekte</div>
 				</div>
 				<div class="inlineImp clerfix col-xs-12 col-sm-4">
 					<div class="impressum-btn close" data-toggle="modal" data-target="#datenschutz">datenschutz |&nbsp;</div>
 					<div class="impressum-btn close" data-toggle="modal" data-target="#impressum">impressum</div>
 				</div>
+			</div>
+			<div style="margin: -10px 0 10px; line-height: 14px;">
+				<small style="font-size: 67%;">* Alle Preisangaben in Euro inkl. MwSt und ggf. zzgl. Versand und weiterer Preisbestandteile.  Zwischenzeitliche Änderung der Preise, Rangfolge, Lieferkosten und -zeiten möglich</small>
 			</div>
 		</div>	
 	</footer>

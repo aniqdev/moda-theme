@@ -28,15 +28,30 @@
 		return $value[0];
 	}, $moda_meta);
 
-	unset($moda_meta['moda_id']);
+	$moda_meta = array_merge($moda_meta, $the_excerpt);
 
 	$VariationsPics = json_decode($moda_meta['VariationsPics'], 1);
 
 	$PictureURL = explode(',', $moda_meta['PictureURL']);
 
-	unset($moda_meta['PictureURL']);
+	$PictureURL = array_values(array_filter($PictureURL));
+	$PictureURL = array_map(function ($hash)
+	{
+		return get_ebay_pic_url_by_hash($hash, 600);
+	}, $PictureURL);
 
-	$term_id = wp_get_post_terms(get_the_ID(), 'fashion_category')[0]->term_id;
+	if($VariationsPics) foreach ($VariationsPics as $pics_meta) {
+		foreach ($pics_meta['VariationSpecificPictureSet'] as $pic) {
+			if(isset($pic['PictureURL'])) 
+			foreach ($pic['PictureURL'] as $pic_url):
+				$PictureURL[] = $pic_url;
+			endforeach;
+		}
+	}
+
+	$post_terms = wp_get_post_terms(get_the_ID(), 'fashion_category');
+
+	$term_id = $post_terms ? $post_terms[0]->term_id : 3;
 
 	if($term_id): 
 		$args = [
@@ -52,41 +67,26 @@
 
 	    $myposts = get_posts( $args );
 	endif;
-
+if(isset($_GET['test'])){
+	sa($PictureURL);
+	sa($VariationsPics);
+}
 ?>
 <div class="row">
 	<div class="col-xs-12 col-sm-6">
 		<div class="moda-page-slider row">
 			<div id="moda_page_slider" class="carousel slide" data-ride="carousel">
 			  <ol class="carousel-indicators">
-			  	<?php foreach ($PictureURL as $key => $hash): ?>
+			  	<?php foreach ($PictureURL as $key => $src): ?>
 			    <li data-target="#moda_page_slider" data-slide-to="<?= $key; ?>" class="<?= $key === 0 ? 'active' : ''; ?>"></li>
-				<?php endforeach;
-				if($VariationsPics) foreach ($VariationsPics as $pics_meta) {
-					foreach ($pics_meta['VariationSpecificPictureSet'] as $pic) {
-						foreach ($pic['PictureURL'] as $pic): ?>
-						    <li data-target="#moda_page_slider" data-slide-to="<?= ++$key; ?>"></li>
-						<?php endforeach;
-					}
-				} ?>
+				<?php endforeach; ?>
 			  </ol>
 			  <div class="carousel-inner">
-			  	<?php foreach ($PictureURL as $key => $hash): ?>
+			  	<?php foreach ($PictureURL as $key => $src): ?>
 			    <div class="carousel-item <?= $key === 0 ? 'active' : ''; ?>">
-					<img itemprop="image" class="-img" src="<?= get_ebay_pic_url_by_hash($hash, 600); ?>" alt="<?= $the_title; ?>">
+					<img itemprop="image" class="-img" src="<?= $src; ?>" alt="<?= $the_title; ?>">
 			    </div>
-				<?php endforeach;
-
-				if($VariationsPics) foreach ($VariationsPics as $pics_meta) {
-					foreach ($pics_meta['VariationSpecificPictureSet'] as $pic) {
-						foreach ($pic['PictureURL'] as $pic_url): ?>
-						    <div class="carousel-item">
-								<img itemprop="image" class="-img" src="<?= $pic_url; ?>" alt="<?= $the_title; ?>">
-						    </div>
-						<?php endforeach;
-					}
-				}
- ?>
+				<?php endforeach; ?>
 			  </div>
 			  <a class="carousel-control-prev" href="#moda_page_slider" role="button" data-slide="prev">
 			    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -121,7 +121,7 @@
 					<meta itemprop="name" content="<?= $moda_meta['Marke'] ?>" />
 				</div>
 			<?php endif; ?>
-			<a class="-readmore" href="https://www.ebay.de/itm/<?= $moda_meta['itemId']; ?>">mehr Informationen</a>
+			<a class="-readmore" href="<?= get_partner_link('https://www.ebay.de/itm/'.$moda_meta['itemId']); ?>" target="_blank">mehr Informationen</a>
 		</div>
 
 		<div class="inner-baner row">
@@ -137,10 +137,6 @@
 		<?php
 
 		$ItemSpecifics = json_decode($moda_meta['ItemSpecifics'], 1);
-
-		$Variations = json_decode($moda_meta['Variations'], 1);
-
-		$Description = $moda_meta['Description'];
 
 		?>
 
@@ -196,24 +192,6 @@
 	  </a>
 	</div>
 </div>
-
-<?php if($Variations = false): ?>
-<h4>Variations</h4>
-<table>
-	<tbody>
-		<tr><th>name</th><th>value</th></tr>
-<?php
-if($Variations) foreach ($Variations as $key => $Variation) {
-	echo "<tr><td>$Variation[Name]</td><td>";
-	foreach ($Variation['Value'] as $var) {
-		echo $var.'<br>';
-	}
-	echo "</td></tr>";
-}
-?>
-	</tbody>
-</table>
-<?php endif ?>
 
 <?php
 if(false && $VariationsPics) foreach ($VariationsPics as $meta) {

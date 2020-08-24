@@ -49,17 +49,6 @@ function _sa_($array = [], $save = false, $pre_wrap = true){
 	echo $ret;
 }
 
-if (defined('DEV_MODE')) {
-	define( 'db_HOST', 'localhost' ); // set database host
-	define( 'db_USER', 'root' ); // set database user
-	define( 'db_PASS', '' ); // set database password
-	define( 'db_NAME', 'gig_parser' ); // set database name
-}else{
-	define( 'db_HOST', '127.0.0.1' ); // set database host
-	define( 'db_USER', 'U2213198' ); // set database user
-	define( 'db_PASS', '12345' ); // set database password
-	define( 'db_NAME', 'DB2213198' ); // set database name
-}
 
 $wpdb2 = new wpdb( db_USER, db_PASS, db_NAME, db_HOST );
 
@@ -67,7 +56,7 @@ function arrayDB($query='')
 {
 	$query = trim($query);
 
-	if(!$query) return;
+	if(!$query) return [];
 
 	global $wpdb2;
 
@@ -271,7 +260,7 @@ function moda_scripts() {
 
 	// wp_enqueue_script( 'jquery.bxslider.min', KW_TEMPLATE_DIRECTORY_URI . '/assets/js/jquery.bxslider.min.js', array( 'jquery' ), '2.0.2', true );
 
-	wp_enqueue_script( 'main-page', KW_TEMPLATE_DIRECTORY_URI . '/assets/js/main-page.js', array( 'jquery' ), filemtime(__DIR__.'/assets/js/main-page.js'), true );
+	// wp_enqueue_script( 'main-page', KW_TEMPLATE_DIRECTORY_URI . '/assets/js/main-page.js', array( 'jquery' ), filemtime(__DIR__.'/assets/js/main-page.js'), true );
 
 	// if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 	// 	wp_enqueue_script( 'comment-reply' );
@@ -509,10 +498,14 @@ function kw_insert_post($opts = [])
 		}
 
 		$post_excerpt = [
+			'itemId' => $moda_arr['itemId'],
 			'PictureURL' => $moda_arr['PictureURL'],
 			'QuantitySold' => $moda_arr['QuantitySold'],
 			'HitCount' => $moda_arr['HitCount'],
 			'currentPrice' => $moda_arr['currentPrice'],
+			'FeedbackScore' => $moda_arr['Seller.FeedbackScore'],
+			'ItemSpecifics' => $moda_arr['ItemSpecifics'],
+			'VariationsPics' => $moda_arr['VariationsPics'],
 		];
 
 		$post_data = array(
@@ -528,7 +521,7 @@ function kw_insert_post($opts = [])
 			'post_title'     => $moda_arr['title'],                                                   // Заголовок (название) записи.
 			'post_type'      => 'fashion', // Тип записи.
 			// 'meta_input'     => $moda_arr,                             // добавит указанные мета поля. По умолчанию: ''. с версии 4.4.
-			'post_content_filtered' => ($cat = @(int)$cat_ids[$moda_arr['categoryId']]) ? $cat : '-',
+			// 'post_content_filtered' => ($cat = @(int)$cat_ids[$moda_arr['categoryId']]) ? $cat : '-',
 		);
 
 		// Вставляем данные в БД
@@ -560,6 +553,8 @@ function kw_insert_post($opts = [])
 
 function kw_update_post($opts = [])
 {
+	global $wpdb;
+
 	$opts = array_merge ( [
 		'effect' => '',
 		'limit' => '10',
@@ -594,19 +589,22 @@ function kw_update_post($opts = [])
 		// unset($moda_arr['post_id']);
 
 		$post_excerpt = [
+			'itemId' => $moda_arr['itemId'],
 			'PictureURL' => $moda_arr['PictureURL'],
 			'QuantitySold' => $moda_arr['QuantitySold'],
 			'HitCount' => $moda_arr['HitCount'],
 			'currentPrice' => $moda_arr['currentPrice'],
+			'FeedbackScore' => $moda_arr['Seller.FeedbackScore'],
+			'ItemSpecifics' => $moda_arr['ItemSpecifics'],
+			'VariationsPics' => $moda_arr['VariationsPics'],
 		];
 
 		$post_data = [
 			'ID'             => $moda_arr['post_id'],
+			'post_title'     => $moda_arr['title'],
 			'post_excerpt'   => json_encode($post_excerpt),
 			'post_parent'   => (float)$moda_arr['currentPrice'] * 100,
 			'menu_order'    => (int)$moda_arr['QuantitySold'],
-			// 'meta_input'     => $moda_arr, // или не нужно???
-			'post_content_filtered' => ($cat = @(int)$cat_ids[$moda_arr['categoryId']]) ? $cat : '-',
 		];
 
 		// Вставляем данные в БД
@@ -615,6 +613,8 @@ function kw_update_post($opts = [])
 			 $errors[] = $post_id->get_error_message();
 		}
 		else {
+			$wpdb->delete( $wpdb->postmeta, [ 'post_id'=>$post_id ] );
+			clean_post_cache( $post_id );
 			$post_ids[] = $post_id;
 			arrayDB("UPDATE moda_list SET flag2 = '$flag_value' WHERE id = '$moda_list[id]'"); // $flag_value = 'updated3';
 		}
@@ -921,4 +921,54 @@ function ajax_get_sibling_cats()
 
 	echo json_encode($termses);
 	die;
+}
+
+
+function get_partner_link($url){
+	// return 'https://rover.ebay.com/rover/1/707-53477-19255-0/1?icep_id=114&ipn=icep&toolid=20004&campid=5338243349&mpre='.rawurlencode($url);
+	return 'http://rover.ebay.com/rover/1/707-53477-19255-0/1?ff3=4&pub=5575611989&toolid=10001&campid=5338724019&customid=&mpre='.rawurlencode($url);
+}
+
+
+function iz_mobile()
+{
+	foreach (['iPhone', 'Android', 'webOS', 'BlackBerry', 'iPod', 'Nokia'] as $os) {
+	  if (strpos($_SERVER['HTTP_USER_AGENT'], $os) !== false) {
+	    return true;
+	  }
+	}
+	return false;
+}
+
+
+function draw_wp_cats_recur(&$arr, $parent_id)
+{
+    if (!$arr) return;
+
+    if (isset($arr[$parent_id])) {
+        echo '<ul>';
+        foreach ($arr[$parent_id] as $val) {
+            echo '<li><a href="https://modetoday.de/fashion_category/'.$val['slug'].'/" target="_blank" title="'.$val['name'].'">['.$val['term_id'].']'.$val['name'].' ('.$val['count'].')</a>';
+            if($val['term_id'] != $val['parent']) draw_wp_cats_recur($arr, $val['term_id']);
+            echo '</li>';
+        }
+        echo '</ul>';
+    }
+    
+}
+function draw_wp_cats($parent_id = '0')
+{
+	global $wpdb;
+    $res = $wpdb->get_results("SELECT DISTINCT t.*, tt.*
+    FROM wp_terms AS t
+    INNER JOIN wp_term_taxonomy AS tt
+    ON t.term_id = tt.term_id
+    WHERE tt.taxonomy = 'fashion_category'", ARRAY_A );
+
+    $parent_keys = [];
+    foreach ($res as $val) {
+        $parent_keys[$val['parent']][] = $val;
+    }
+
+    draw_wp_cats_recur($parent_keys, $parent_id);
 }

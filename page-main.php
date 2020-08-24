@@ -17,14 +17,17 @@ get_header();
 <div class="main-page-slider">
 	<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 	  <div class="inlineImp clerfix col-xs-12 col-sm-4">
-	  	<div class="impressum-btn close" data-toggle="modal" data-target="#datenschutz">datenschutz |&nbsp;</div>
-	  	<div class="impressum-btn close" data-toggle="modal" data-target="#impressum">impressum</div>
+	  	<a href="https://modetoday.de/datenschutz/" class="impressum-btn close">datenschutz |&nbsp;</a>
+	  	<a href="https://modetoday.de/impressum/" class="impressum-btn close">impressum</a>
 	  </div>
 	  <ol class="carousel-indicators">
 	    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
 	    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
 	    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
 	    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+	    <?php if(iz_mobile()): ?>
+	    <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+	    <?php endif; ?>
 	  </ol>
 	  <div class="carousel-inner">
 	    <div class="carousel-item active" style="background-image: url('<?= KW_TEMPLATE_DIRECTORY_URI; ?>/images/slide-1.jpg')">
@@ -63,6 +66,11 @@ get_header();
 	      	</div>
 	  		<a href="https://modetoday.de/fashion_category/womens-accessories/" class="category-link">VIEW</a>
 	    </div>
+	    <?php if(iz_mobile()): ?>
+	    <div class="carousel-item cat-list" style="overflow-y: auto;">
+	      	<?php draw_wp_cats(60); ?>
+	    </div>
+	    <?php endif; ?>
 	  </div>
 	  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
 	    <span class="carousel-control-prev-icon" aria-hidden="true"></span>

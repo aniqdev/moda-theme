@@ -19,12 +19,13 @@
 	{
 		return $value[0];
 	}, $moda_meta);
+	
+	$the_excerpt = get_the_excerpt();
+	$the_excerpt = json_decode($the_excerpt, true);
 
-	unset($moda_meta['moda_id']);
+	$moda_meta = array_merge($moda_meta, $the_excerpt);
 
 	$PictureURL = explode(',', $moda_meta['PictureURL']);
-
-	unset($moda_meta['PictureURL']);
 
 	$term_id = wp_get_post_terms(get_the_ID(), 'fashion_category')[0]->term_id;
 
@@ -94,12 +95,6 @@
 
 $ItemSpecifics = json_decode($moda_meta['ItemSpecifics'], 1);
 
-$Variations = json_decode($moda_meta['Variations'], 1);
-
-$VariationsPics = json_decode($moda_meta['VariationsPics'], 1);
-
-$Description = $moda_meta['Description'];
-
 ?>
 
 <ul class="name-value-list">
@@ -135,40 +130,6 @@ foreach ($ItemSpecifics as $key => $meta) : ?>
 	</div>
 </div>
 
-
-<?php if($Variations = false): ?>
-<h4>Variations</h4>
-<table>
-	<tbody>
-		<tr><th>name</th><th>value</th></tr>
-<?php
-if($Variations) foreach ($Variations as $key => $Variation) {
-	echo "<tr><td>$Variation[Name]</td><td>";
-	foreach ($Variation['Value'] as $var) {
-		echo $var.'<br>';
-	}
-	echo "</td></tr>";
-}
-?>
-	</tbody>
-</table>
-<?php endif ?>
-
-<?php
-if($VariationsPics = false) foreach ($VariationsPics as $meta) {
-	echo '<hr><h4>'.$meta['VariationSpecificName'].'</h4>';
-	foreach ($meta['VariationSpecificPictureSet'] as $pic) {
-		echo '<div class="row">';
-		echo '<hr><h6>'.$pic['VariationSpecificValue'].'</h6>';
-		foreach ($pic['PictureURL'] as $PictureURL) {
-			echo '<div class="col-sm-2">';
-			echo '<img alt="'.$the_title.'" src="'.$PictureURL.'" style="max-width:100px;max-height:100px;margin:auto;"><br><br>';
-			echo '</div>';
-		}
-		echo '</div>';
-	}
-}
-?>
 <!-- /MODA META -->
 
 		</main><!-- #main -->

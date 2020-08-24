@@ -72,6 +72,15 @@ foreach ($level3 as $val) {
 			'parent'      => $parent_term_id
 		)
 	);
+	if( ! is_wp_error($insert_data) ){
+		sa($insert_data);
+		$term_id = $insert_data['term_id'];
+		arrayDB("UPDATE moda_cats SET wp_cat_id = '$term_id' WHERE id = '$val[id]'");
+	}else{
+		echo "<hr>";
+		echo $insert_data->get_error_message();
+		echo "<hr>";
+	}
 }
 
 sa($insert_data);
